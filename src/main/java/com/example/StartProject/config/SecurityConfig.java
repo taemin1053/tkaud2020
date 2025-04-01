@@ -1,21 +1,39 @@
 package com.example.StartProject.config;
 
 
+import com.example.StartProject.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
+    private final AuthenticationConfiguration authenticationConfiguration;
+
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
+        this.authenticationConfiguration = authenticationConfiguration;
+    }
+    //AuthenticationManager Bean 등록하기->이걸 해야 loginFilter가 적용이된다.
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
     //BCryptPasswordEncoder 등록하기
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -44,6 +62,10 @@ public class SecurityConfig {
                         //swagger경로허용
                         .anyRequest().authenticated());
                         //다른 요청은 로그인을 한 사용자만 요청가능
+        //필터 추가 loginFilter()는 인자를 받음( AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야하기 때문에
+        //등록이 필요하다
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정 스테이트 리스 상태 설정
         http
@@ -54,16 +76,8 @@ public class SecurityConfig {
 
         return http.build();
     }
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("admin")
-                .password(bCryptPasswordEncoder().encode("admin123"))
-                .roles("ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
 
+    
 }
 
 

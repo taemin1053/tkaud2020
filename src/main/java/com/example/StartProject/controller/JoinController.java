@@ -3,13 +3,12 @@ package com.example.StartProject.controller;
 import com.example.StartProject.Service.JoinService;
 import com.example.StartProject.dto.JoinDTO;
 import jakarta.validation.Valid;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
-
+@RequestMapping("/api/auth")
 public class JoinController {
     private final JoinService joinService;
 
@@ -18,13 +17,15 @@ public class JoinController {
     }
 
     @PostMapping("/join")
-    public String joinProcess(@RequestBody @Valid JoinDTO joinDTO){
-
-        System.out.println("Username: " + joinDTO.getUsername());
-        joinService.joinProcess(joinDTO);
-
-        return "ok";
+    public ResponseEntity<String> joinProcess(@RequestBody @Valid JoinDTO joinDTO){
+        try {
+            joinService.joinProcess(joinDTO);
+            return ResponseEntity.ok("JOIN SUCCESS.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
     }
+
     @GetMapping("/join")
     public String joinTest(){
         return "GET request successful";
