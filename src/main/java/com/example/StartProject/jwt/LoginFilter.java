@@ -73,6 +73,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     // 로그인 실패시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException authenticationException) {
-        System.out.println("🚨 [LoginFilter] 로그인 실패! 오류 메시지: " + authenticationException.getMessage());
+        System.out.println("🚨 [LoginFilter] login fail error: " + authenticationException.getMessage());
     }
 }

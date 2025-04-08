@@ -27,9 +27,9 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(authDTO.getEmail(), authDTO.getPassword())
             );
             String token = jwtUtil.generateToken(authDTO.getEmail());
-            return ResponseEntity.ok(Map.of("message", "로그인 성공", "token", token));
+            return ResponseEntity.ok(Map.of("message", "login ok", "token", token));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("로그인 실패: " + e.getMessage());
+            return ResponseEntity.status(401).body("login fail: " + e.getMessage());
         }
     }
 }

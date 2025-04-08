@@ -1,4 +1,4 @@
-package com.example.StartProject.Service;
+package com.example.StartProject.service;
 
 import com.example.StartProject.dto.JoinDTO;
 import com.example.StartProject.entity.UserEntity;

@@ -1,6 +1,6 @@
 package com.example.StartProject.controller;
 
-import com.example.StartProject.Service.JoinService;
+import com.example.StartProject.service.JoinService;
 import com.example.StartProject.dto.JoinDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

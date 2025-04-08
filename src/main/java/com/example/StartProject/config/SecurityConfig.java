@@ -58,7 +58,13 @@ public class SecurityConfig {
                         //로그인 루트 회원가입은 모든 권한을 허용
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         //어드민 권한을 가진 사람만 어드민을 요청할 수 있다.
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(
+                                "/swagger/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/webjars/**"
+                        ).permitAll()
                         //swagger경로허용
                         .anyRequest().authenticated());
                         //다른 요청은 로그인을 한 사용자만 요청가능
