@@ -13,12 +13,13 @@ public class ChatroomEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "chatroom_id")
     private Long id;
 
     @Column(name = "chatroom_name")
     private String chatroomName;
 
-    @Column(name = "create_time", nullable = false)
+    @Column(name = "create_time", nullable = false, updatable = false)
     private LocalDateTime createTime;
 
     @Column(name = "last_message", nullable = true)
