@@ -2,6 +2,7 @@ package com.example.StartProject.controller;
 
 import com.example.StartProject.dto.ChatroomDTO;
 import com.example.StartProject.dto.ChatroomSearch;
+import com.example.StartProject.dto.ChatroomUpdateDTO;
 import com.example.StartProject.service.ChatroomService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -79,5 +80,15 @@ public class ChatroomController {
     public ResponseEntity<List<ChatroomSearch>> searchChatroomsByKeyword(@RequestParam String keyword) {
         List<ChatroomSearch> chatrooms = chatroomService.searchByChatroomNameKeyword(keyword);
         return ResponseEntity.ok(chatrooms);
+    }
+    @PutMapping("/{chatroomId}")
+    public ResponseEntity<?> updateChatroom(@PathVariable Long chatroomId, @RequestBody ChatroomDTO dto) {
+        chatroomService.updateChatroomName(chatroomId, dto.getChatroomName());
+        return ResponseEntity.ok("chartroom updated");
+    }
+    @DeleteMapping("/{chatroomId}")
+    public ResponseEntity<?> deleteChatroom(@PathVariable Long chatroomId) {
+        chatroomService.deleteChatroom(chatroomId);
+        return ResponseEntity.ok("chatroom deleted");
     }
 }

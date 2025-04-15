@@ -19,9 +19,9 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String generateToken(String username) {
+    public String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(username) // 사용자 이름 설정
+                .setSubject(email) // 사용자 이름 설정
                 .setIssuedAt(new Date()) // 발급 시간 설정
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 만료 시간 설정
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256) // SecretKey와 알고리즘 설정
